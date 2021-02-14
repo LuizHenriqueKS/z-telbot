@@ -1,7 +1,5 @@
 import {
   BotCommandHandler,
-  User,
-  Chat,
   ChatHandler,
   InvalidMessageException,
   Message,
@@ -17,15 +15,15 @@ class SentMessageEvent {
   #bot: ZTelBot;
   #message: Message;
   #command?: BotCommandHandler;
-  #chat?: ChatHandler;
+  #chat: ChatHandler;
   #from?: UserHandler;
 
   constructor(bot: ZTelBot, message: Message) {
     this.#bot = bot;
     this.#message = message;
     this.#command = buildBotCommandHandler(message);
-    this.#from = buildUserHandler(message, 'from');
-    this.#chat = buildChatHandler(message);
+    this.#from = buildUserHandler(message, 'from')!;
+    this.#chat = buildChatHandler(message)!;
     if (!message) {
       throw new InvalidMessageException();
     }
@@ -42,11 +40,11 @@ class SentMessageEvent {
     return new ZTelBotSender(this.#bot, { chatId });
   }
 
-  get from(): User | undefined {
+  get from(): UserHandler | undefined {
     return this.#from;
   }
 
-  get chat(): Chat | undefined {
+  get chat(): ChatHandler {
     return this.#chat;
   }
 
