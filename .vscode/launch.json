@@ -7,7 +7,7 @@
     {
       "type": "pwa-node",
       "request": "launch",
-      "name": "All tests",
+      "name": "Run all tests",
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**"
@@ -52,7 +52,7 @@
     {
       "type": "pwa-node",
       "request": "launch",
-      "name": "Run test bot",
+      "name": "Run main bot",
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**"

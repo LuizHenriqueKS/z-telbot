@@ -7,16 +7,18 @@ telBot.addTextMessageListener(evt => {
   console.log(`[${evt.chat.name} (ID: ${evt.chat.id})] ${evt.from?.name}(ID: ${evt.from?.id}): ${evt.message?.text}`);
 });
 
-telBot.addCommandListener('hi', evt => {
-  evt.reply().text({ text: `Hi: ${evt.command.argsText}` });
+telBot.addCommandListener({ command: 'hi', description: 'Send a hi for you' }, async (evt) => {
+  await evt.reply().text({ text: `Hi: ${evt.command.argsText}` });
 });
 
-telBot.addDefaultCommandListener(evt => {
+telBot.addDefaultCommandListener(async (evt) => {
   if (!evt.commandFound) {
-    evt.reply().text({ text: `Comando inválido: ${evt.command.commandName}` });
+    await evt.reply().text({ text: `Comando inválido: ${evt.command.commandName}` });
   }
 });
 
-telBot.listenUpdates().then((botInfo) => {
+telBot.sendCommands();
+
+telBot.listenUpdates({ skipFirstBatch: true }).then((botInfo) => {
   console.log(`Bot iniciado com sucesso: ${botInfo.username}`);
 });
