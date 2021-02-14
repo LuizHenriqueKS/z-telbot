@@ -15,12 +15,21 @@ class ZTelBotSender {
     this.#options = options;
   }
 
-  async text(message: SenderMessageForm): Promise<Message> {
-    const form: MessageForm = {
-      chatId: this.#options.chatId,
-      replyToMessageId: this.#options.replyToMessageId,
-      ...message
-    };
+  async text(message: SenderMessageForm | string): Promise<Message> {
+    let form: MessageForm;
+    if (message instanceof SenderMessageForm) {
+      form = {
+        chatId: this.#options.chatId,
+        replyToMessageId: this.#options.replyToMessageId,
+        ...message
+      };
+    } else {
+      form = {
+        chatId: this.#options.chatId,
+        replyToMessageId: this.#options.replyToMessageId,
+        text: message
+      };
+    }
     return await this.#bot.sendMessage(form);
   }
 }
