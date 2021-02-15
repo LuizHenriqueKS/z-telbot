@@ -21,7 +21,7 @@ telBot.addDefaultCommandListener(async (evt) => {
   }
 });
 
-telBot.sendCommands();
+telBot.sendCommands().then();
 
 telBot.listenUpdates({ skipFirstBatch: true }).then((botInfo) => {
   console.log(`Bot iniciado com sucesso: ${botInfo.username}`);

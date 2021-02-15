@@ -12,7 +12,7 @@ import buildBotCommandHandler from '../util/buildBotCommandHandler';
 import buildChatHandler from '../util/buildChatHandler';
 import buildUserHandler from '../util/buildUserHandler';
 
-class MessageEvent {
+class TextMessageEvent {
   #bot: ZTelBot;
   #update: Update;
   #message: Message;
@@ -49,7 +49,7 @@ class MessageEvent {
   }
 
   get commandFound(): string | undefined {
-    return this.commandFound;
+    return this.#commandFound;
   }
 
   get from(): UserHandler | undefined {
@@ -81,4 +81,4 @@ class MessageEvent {
   }
 }
 
-export default MessageEvent;
+export default TextMessageEvent;
