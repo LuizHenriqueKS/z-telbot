@@ -7,6 +7,10 @@ telBot.addTextMessageListener(evt => {
   console.log(`[${evt.chat.name} (ID: ${evt.chat.id})] ${evt.from?.name}(ID: ${evt.from?.id}): ${evt.message?.text}`);
 });
 
+telBot.addCommandListener({ command: 'out', description: 'Send a hi for you' }, async (evt) => {
+  await evt.reply().text('Out');
+});
+
 telBot.addCommandListener({ command: 'hi', description: 'Send a hi for you' }, async (evt) => {
   await evt.reply().text({ text: `Hi: ${evt.command.argsText}` });
 });

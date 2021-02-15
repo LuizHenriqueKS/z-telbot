@@ -18,11 +18,11 @@ class ZTelBotSender {
   async text(message: SenderMessageForm | string): Promise<Message> {
     let form: MessageForm;
     const arg: any = message;
-    if (message instanceof String) {
+    if (typeof (message) === 'string') {
       form = {
         chatId: this.#options.chatId,
         replyToMessageId: this.#options.replyToMessageId,
-        text: arg.text
+        text: arg
       };
     } else {
       form = {
