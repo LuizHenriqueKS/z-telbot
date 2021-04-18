@@ -80,7 +80,7 @@ class ZTelBot {
   addCommandListener(command: BotCommandForm | string, listener: CommandListener) {
     let info: BotCommandInfo;
     const arg: any = command;
-    if (command instanceof String) {
+    if (typeof (command) === 'string') {
       info = {
         command: arg,
         hidden: false,

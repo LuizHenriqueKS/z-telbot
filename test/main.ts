@@ -15,6 +15,10 @@ telBot.addCommandListener({ command: 'hi', description: 'Send a hi for you' }, a
   await evt.reply().text({ text: `Hi: ${evt.command.argsText}` });
 });
 
+telBot.addCommandListener('ping', async (evt) => {
+  await evt.reply().text('Ping');
+});
+
 telBot.addDefaultCommandListener(async (evt) => {
   if (!evt.commandFound) {
     await evt.reply().text({ text: `Comando inválido: ${evt.command.commandName}` });
