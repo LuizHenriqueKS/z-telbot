@@ -82,7 +82,7 @@ class ZTelBot {
     const arg: any = command;
     if (command instanceof String) {
       info = {
-        command: arg.command,
+        command: arg,
         hidden: false,
         description: '',
         listener
