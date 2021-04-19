@@ -3,7 +3,7 @@ import {
 } from '../index';
 
 class InlineKeyboardMarkup {
-  inlineKeyboard!: InlineKeyboardButton[];
+  inlineKeyboard!: InlineKeyboardButton[][];
 }
 
 export default InlineKeyboardMarkup;

@@ -1,4 +1,4 @@
-import { ZTelBot } from '../src/';
+import { InlineKeyboardMarkup, MessageForm, ParseMode, ZTelBot } from '../src/';
 import getApiToken from './util/getApiToken';
 
 const telBot = new ZTelBot({ token: getApiToken() });
@@ -23,6 +23,26 @@ telBot.addDefaultCommandListener(async (evt) => {
   if (!evt.commandFound) {
     await evt.reply().text({ text: `Comando inválido: ${evt.command.commandName}` });
   }
+});
+
+telBot.addCommandListener('options', async (evt) => {
+  const receivedMessage = evt.message;
+  const replyMarkup: InlineKeyboardMarkup = {
+    inlineKeyboard: [
+      [
+        { text: 'X', callbackData: 'x' },
+        { text: 'O', callbackData: 'o' }
+      ]
+    ]
+  };
+  const message: MessageForm = {
+    chatId: receivedMessage.chat.id || 0,
+    text: 'Escolha uma <b>opção</b>:',
+    parseMode: ParseMode.HTML,
+    replyToMessageId: receivedMessage.messageId,
+    replyMarkup
+  };
+  await telBot.sendMessage(message);
 });
 
 telBot.sendCommands().then();
