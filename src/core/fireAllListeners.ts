@@ -1,6 +1,7 @@
 import FireAllListenersAttrs from './FireAllListenersAttrs';
 import BotCommandInfo from '../model/BotCommandInfo';
 import CallbackQueryEvent from '../event/CallbackQueryEvent';
+import InvalidMessageException from '../exception/InvalidMessageException';
 
 import {
   UpdateEvent,
@@ -13,13 +14,15 @@ import {
 export default function fireAllListeners(attrs: FireAllListenersAttrs) {
   fireUpdateListeners(attrs);
   if (attrs.update.callbackQuery) {
-    fireCallbackQueryListeners(attrs);
-  } else {
+    fireDefaultCallbackQueryListeners(attrs);
+  } else if (attrs.update.message) {
     const cmdEvt = new CommandEvent(attrs.bot, attrs.update);
     fireCommandListeners(attrs, cmdEvt);
     fireDefaultCommandListeners(attrs, cmdEvt);
     fireMessageListeners(attrs, cmdEvt);
     fireTextMessageListeners(attrs, cmdEvt);
+  } else {
+    throw new InvalidMessageException();
   }
 };
 
@@ -29,8 +32,8 @@ function fireUpdateListeners(attrs: FireAllListenersAttrs) {
   }
 }
 
-function fireCallbackQueryListeners(attrs: FireAllListenersAttrs) {
-  for (const listener of attrs.callbackQueryListeners.values()) {
+function fireDefaultCallbackQueryListeners(attrs: FireAllListenersAttrs) {
+  for (const listener of attrs.defaultCallbackQueryListeners.values()) {
     listener(new CallbackQueryEvent(attrs.bot, attrs.update));
   }
 }

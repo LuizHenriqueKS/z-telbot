@@ -4,7 +4,6 @@ import {
   ZTelBot,
   ZTelBotSender,
   BotCommandHandler,
-  InvalidMessageException,
   ChatHandler,
   UserHandler
 } from '..';
@@ -28,12 +27,8 @@ class CommandEvent {
     this.#command = buildBotCommandHandler(update.message)!;
     this.#from = buildUserHandler(update.message, 'from')!;
     this.#chat = buildChatHandler(update.message)!;
-    if (update.message) {
-      this.#message = update.message;
-      this.#text = this.#message.text || '';
-    } else {
-      throw new InvalidMessageException();
-    }
+    this.#message = update.message!;
+    this.#text = this.#message.text || '';
   }
 
   reply(): ZTelBotSender {

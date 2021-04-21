@@ -35,7 +35,7 @@ class ZTelBot {
   #sentMessageListeners: Map<number, SentMessageListener>;
   #textMessageListeners: Map<number, TextMessageListener>;
   #commandListeners: Map<number, BotCommandInfo>;
-  #callbackQueryListeners: Map<number, CallbackQueryListener>;
+  #defaultCallbackQueryListeners: Map<number, CallbackQueryListener>;
   #defaultCommandListeners: Map<number, CommandListener>;
 
   constructor(options: ZTelBotOptions) {
@@ -45,7 +45,7 @@ class ZTelBot {
     this.#sentMessageListeners = new Map();
     this.#textMessageListeners = new Map();
     this.#commandListeners = new Map();
-    this.#callbackQueryListeners = new Map();
+    this.#defaultCallbackQueryListeners = new Map();
     this.#defaultCommandListeners = new Map();
   }
 
@@ -76,8 +76,8 @@ class ZTelBot {
     return this.addListener(this.#textMessageListeners, listener);
   }
 
-  addCallbackQueryListener(listener: CallbackQueryListener): number {
-    return this.addListener(this.#callbackQueryListeners, listener);
+  addDefaultCallbackQueryListener(listener: CallbackQueryListener): number {
+    return this.addListener(this.#defaultCallbackQueryListeners, listener);
   }
 
   addDefaultCommandListener(listener: CommandListener): number {
@@ -157,8 +157,8 @@ class ZTelBot {
     return this.#textMessageListeners.delete(listenerId);
   }
 
-  removeCallbackQueryListener(listenerId: number): boolean {
-    return this.#callbackQueryListeners.delete(listenerId);
+  removeDefaultCallbackQueryListener(listenerId: number): boolean {
+    return this.#defaultCallbackQueryListeners.delete(listenerId);
   }
 
   removeDefaultCommandListener(listenerId: number): boolean {
@@ -205,7 +205,7 @@ class ZTelBot {
     const sentMessageListeners = this.#sentMessageListeners;
     const textMessageListeners = this.#textMessageListeners;
     const commandListeners = this.#commandListeners;
-    const callbackQueryListeners = this.#callbackQueryListeners;
+    const defaultCallbackQueryListeners = this.#defaultCallbackQueryListeners;
     const defaultCommandListeners = this.#defaultCommandListeners;
     fireAllListeners({
       bot,
@@ -216,7 +216,7 @@ class ZTelBot {
       sentMessageListeners,
       textMessageListeners,
       commandListeners,
-      callbackQueryListeners,
+      defaultCallbackQueryListeners,
       defaultCommandListeners
     });
   }

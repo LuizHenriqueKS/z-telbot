@@ -15,7 +15,7 @@ class FireAllListenersAttrs {
   sentMessageListeners!: Map<number, SentMessageListener>;
   textMessageListeners!: Map<number, TextMessageListener>;
   commandListeners!: Map<number, BotCommandInfo>;
-  callbackQueryListeners!: Map<number, CallbackQueryListener>;
+  defaultCallbackQueryListeners!: Map<number, CallbackQueryListener>;
   defaultCommandListeners!: Map<number, CommandListener>;
 }
 
