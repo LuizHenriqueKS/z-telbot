@@ -58,6 +58,7 @@ import UpdateEvent from './event/UpdateEvent';
 import SentMessageEvent from './event/SentMessageEvent';
 import BotCommandHandler from './handler/BotCommandHandler';
 import TextMessageEvent from './event/TextMessageEvent';
+import CallbackQueryEvent from './event/CallbackQueryEvent';
 import ZTelBotListenUpdatesOptions from './core/ZTelBotListenUpdatesOptions';
 import UpdateForm from './model/UpdateForm';
 import ChatHandler from './handler/ChatHandler';
@@ -135,7 +136,8 @@ module.exports = {
   CommandEvent,
   InvalidResultException,
   InvalidMessageException,
-  BotCommand
+  BotCommand,
+  CallbackQueryEvent
 };
 
 export { default as ZTelBot } from './core/ZTelBot';
@@ -209,3 +211,4 @@ export { default as MessageListener } from './listener/MessageListener';
 export { default as InvalidResultException } from './exception/InvalidResultException';
 export { default as InvalidMessageException } from './exception/InvalidMessageException';
 export { default as BotCommand } from './model/BotCommand';
+export { default as CallbackQueryEvent } from './event/CallbackQueryEvent';

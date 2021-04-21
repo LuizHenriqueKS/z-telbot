@@ -45,6 +45,10 @@ telBot.addCommandListener('options', async (evt) => {
   await telBot.sendMessage(message);
 });
 
+telBot.addCallbackQueryListener(evt => {
+  evt.reply().text(`Opção escolhida: ${evt.data}`);
+});
+
 telBot.sendCommands().then();
 
 telBot.listenUpdates({ skipFirstBatch: true }).then((botInfo) => {

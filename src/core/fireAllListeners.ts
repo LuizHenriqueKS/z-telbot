@@ -1,5 +1,6 @@
 import FireAllListenersAttrs from './FireAllListenersAttrs';
 import BotCommandInfo from '../model/BotCommandInfo';
+import CallbackQueryEvent from '../event/CallbackQueryEvent';
 
 import {
   UpdateEvent,
@@ -10,17 +11,27 @@ import {
 } from '..';
 
 export default function fireAllListeners(attrs: FireAllListenersAttrs) {
-  const cmdEvt = new CommandEvent(attrs.bot, attrs.update);
   fireUpdateListeners(attrs);
-  fireCommandListeners(attrs, cmdEvt);
-  fireDefaultCommandListeners(attrs, cmdEvt);
-  fireMessageListeners(attrs, cmdEvt);
-  fireTextMessageListeners(attrs, cmdEvt);
+  if (attrs.update.callbackQuery) {
+    fireCallbackQueryListeners(attrs);
+  } else {
+    const cmdEvt = new CommandEvent(attrs.bot, attrs.update);
+    fireCommandListeners(attrs, cmdEvt);
+    fireDefaultCommandListeners(attrs, cmdEvt);
+    fireMessageListeners(attrs, cmdEvt);
+    fireTextMessageListeners(attrs, cmdEvt);
+  }
 };
 
 function fireUpdateListeners(attrs: FireAllListenersAttrs) {
   for (const listener of attrs.updateListeners.values()) {
     listener(new UpdateEvent(attrs.bot, attrs.update));
+  }
+}
+
+function fireCallbackQueryListeners(attrs: FireAllListenersAttrs) {
+  for (const listener of attrs.callbackQueryListeners.values()) {
+    listener(new CallbackQueryEvent(attrs.bot, attrs.update));
   }
 }
 
