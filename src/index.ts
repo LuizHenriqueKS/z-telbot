@@ -47,6 +47,7 @@ import CallbackGame from './model/CallbackGame';
 import PassportFile from './model/PassportFile';
 import ParseMode from './model/ParseMode';
 import MessageForm from './model/MessageForm';
+import EditMessageTextForm from './model/EditMessageTextForm';
 import ReplyKeyboardMarkup from './model/ReplyKeyboardMarkup';
 import KeyboardButtonPollType from './model/KeyboardButtonPollType';
 import KeyboardButton from './model/KeyboardButton';
@@ -118,6 +119,7 @@ module.exports = {
   PassportFile,
   ParseMode,
   MessageForm,
+  EditMessageTextForm,
   ReplyKeyboardMarkup,
   KeyboardButtonPollType,
   KeyboardButton,
@@ -212,3 +214,4 @@ export { default as InvalidResultException } from './exception/InvalidResultExce
 export { default as InvalidMessageException } from './exception/InvalidMessageException';
 export { default as BotCommand } from './model/BotCommand';
 export { default as CallbackQueryEvent } from './event/CallbackQueryEvent';
+export { default as EditMessageTextForm } from './model/EditMessageTextForm';

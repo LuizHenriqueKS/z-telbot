@@ -1,4 +1,4 @@
-import { InlineKeyboardMarkup, MessageForm, ParseMode, ZTelBot } from '../src/';
+import { EditMessageTextForm, InlineKeyboardMarkup, MessageForm, ParseMode, ZTelBot } from '../src/';
 import getApiToken from './util/getApiToken';
 
 const telBot = new ZTelBot({ token: getApiToken() });
@@ -46,7 +46,12 @@ telBot.addCommandListener('options', async (evt) => {
 });
 
 telBot.addCallbackQueryListener('x', evt => {
-  evt.reply().text('Opção escolhida: 1');
+  const msg: EditMessageTextForm = {
+    chatId: evt.chat.id,
+    messageId: evt.message.messageId,
+    text: 'Opção escolhida: 1'
+  };
+  telBot.editMessageText(msg);
 });
 
 telBot.addDefaultCallbackQueryListener(evt => {

@@ -12,7 +12,8 @@ import {
   InvalidResultException,
   UpdateForm,
   MessageListener,
-  BotCommand
+  BotCommand,
+  EditMessageTextForm
 } from '..';
 
 import axios from 'axios';
@@ -203,6 +204,13 @@ class ZTelBot {
   async sendMessage(message: MessageForm): Promise<Message> {
     const data = smartFixSnakeCase(message);
     const sentMessage = await this.requestResult('sendMessage', data);
+    this.fireSentMessage(sentMessage);
+    return sentMessage;
+  }
+
+  async editMessageText(message: EditMessageTextForm): Promise<Message> {
+    const data = smartFixSnakeCase(message);
+    const sentMessage = await this.requestResult('editMessageText', data);
     this.fireSentMessage(sentMessage);
     return sentMessage;
   }
