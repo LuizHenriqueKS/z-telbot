@@ -1,6 +1,6 @@
 {
   "name": "z-telbot",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Client for telegram bots",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
