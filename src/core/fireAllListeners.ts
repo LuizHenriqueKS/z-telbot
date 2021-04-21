@@ -14,7 +14,9 @@ import {
 export default function fireAllListeners(attrs: FireAllListenersAttrs) {
   fireUpdateListeners(attrs);
   if (attrs.update.callbackQuery) {
-    fireDefaultCallbackQueryListeners(attrs);
+    const callbackEvt = new CallbackQueryEvent(attrs.bot, attrs.update);
+    fireCallbackQueryListeners(attrs, callbackEvt);
+    fireDefaultCallbackQueryListeners(attrs, callbackEvt);
   } else if (attrs.update.message) {
     const cmdEvt = new CommandEvent(attrs.bot, attrs.update);
     fireCommandListeners(attrs, cmdEvt);
@@ -32,9 +34,18 @@ function fireUpdateListeners(attrs: FireAllListenersAttrs) {
   }
 }
 
-function fireDefaultCallbackQueryListeners(attrs: FireAllListenersAttrs) {
+function fireCallbackQueryListeners(attrs: FireAllListenersAttrs, callEvt: CallbackQueryEvent) {
+  for (const listener of attrs.callbackQueryListeners.values()) {
+    if (callEvt.callbackQuery.data && callEvt.callbackQuery.data === listener.data) {
+      listener.listener(callEvt);
+      callEvt.callbackQueryFound = callEvt.data;
+    }
+  }
+}
+
+function fireDefaultCallbackQueryListeners(attrs: FireAllListenersAttrs, callEvt: CallbackQueryEvent) {
   for (const listener of attrs.defaultCallbackQueryListeners.values()) {
-    listener(new CallbackQueryEvent(attrs.bot, attrs.update));
+    listener(callEvt);
   }
 }
 

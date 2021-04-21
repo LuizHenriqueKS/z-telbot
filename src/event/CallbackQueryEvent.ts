@@ -20,6 +20,8 @@ class CallbackQueryEvent {
   #callbackQuery: CallbackQuery;
   #gameShortName: string;
 
+  callbackQueryFound?: string;
+
   constructor(bot: ZTelBot, update: Update) {
     this.#bot = bot;
     this.#update = update;

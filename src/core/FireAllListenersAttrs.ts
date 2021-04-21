@@ -5,6 +5,7 @@ import TextMessageListener from '../listener/TextMessageListener';
 import BotCommandInfo from '../model/BotCommandInfo';
 import { ZTelBot, Update, User, CommandListener } from '..';
 import CallbackQueryListener from '../listener/CallbackQueryListener';
+import BotCallbackQueryInfo from '../model/BotCallbackQueryInfo';
 
 class FireAllListenersAttrs {
   bot!: ZTelBot;
@@ -15,6 +16,7 @@ class FireAllListenersAttrs {
   sentMessageListeners!: Map<number, SentMessageListener>;
   textMessageListeners!: Map<number, TextMessageListener>;
   commandListeners!: Map<number, BotCommandInfo>;
+  callbackQueryListeners!: Map<number, BotCallbackQueryInfo>;
   defaultCallbackQueryListeners!: Map<number, CallbackQueryListener>;
   defaultCommandListeners!: Map<number, CommandListener>;
 }
