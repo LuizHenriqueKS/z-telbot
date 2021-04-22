@@ -13,7 +13,8 @@ import {
   UpdateForm,
   MessageListener,
   BotCommand,
-  EditMessageTextForm
+  EditMessageTextForm,
+  AnswerCallbackQueryForm
 } from '..';
 
 import axios from 'axios';
@@ -213,6 +214,11 @@ class ZTelBot {
     const sentMessage = await this.requestResult('editMessageText', data);
     this.fireSentMessage(sentMessage);
     return sentMessage;
+  }
+
+  async answerCallbackQuery(answer: AnswerCallbackQueryForm) {
+    const data = smartFixSnakeCase(answer);
+    await this.requestResult('answerCallbackQuery', data);
   }
 
   async getMe(): Promise<User> {

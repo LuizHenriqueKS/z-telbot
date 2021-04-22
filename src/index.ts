@@ -66,6 +66,8 @@ import ChatHandler from './handler/ChatHandler';
 import UserHandler from './handler/UserHandler';
 import CommandEvent from './event/CommandEvent';
 import BotCommand from './model/BotCommand';
+import AnswerCallbackQueryForm from './model/AnswerCallbackQueryForm';
+import AnswererCallbackQueryForm from './model/AnswererCallbackQueryForm';
 
 import InvalidResultException from './exception/InvalidResultException';
 import InvalidMessageException from './exception/InvalidMessageException';
@@ -139,7 +141,9 @@ module.exports = {
   InvalidResultException,
   InvalidMessageException,
   BotCommand,
-  CallbackQueryEvent
+  CallbackQueryEvent,
+  AnswerCallbackQueryForm,
+  AnswererCallbackQueryForm
 };
 
 export { default as ZTelBot } from './core/ZTelBot';
@@ -215,3 +219,5 @@ export { default as InvalidMessageException } from './exception/InvalidMessageEx
 export { default as BotCommand } from './model/BotCommand';
 export { default as CallbackQueryEvent } from './event/CallbackQueryEvent';
 export { default as EditMessageTextForm } from './model/EditMessageTextForm';
+export { default as AnswerCallbackQueryForm } from './model/AnswerCallbackQueryForm';
+export { default as AnswererCallbackQueryForm } from './model/AnswererCallbackQueryForm';

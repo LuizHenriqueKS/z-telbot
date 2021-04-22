@@ -5,7 +5,9 @@ import {
   ZTelBotSender,
   ChatHandler,
   UserHandler,
-  CallbackQuery
+  CallbackQuery,
+  AnswererCallbackQueryForm,
+  AnswerCallbackQueryForm
 } from '..';
 import buildChatHandler from '../util/buildChatHandler';
 import buildUserHandler from '../util/buildUserHandler';
@@ -42,6 +44,21 @@ class CallbackQueryEvent {
   send(): ZTelBotSender {
     const chatId = this.#message.chat.id;
     return new ZTelBotSender(this.#bot, { chatId });
+  }
+
+  answerCallbackQuery(data: AnswererCallbackQueryForm | string) {
+    if (typeof (data) === 'string') {
+      this.bot.answerCallbackQuery({
+        callbackQueryId: this.callbackQuery.id,
+        text: data
+      });
+    } else {
+      const answer: AnswerCallbackQueryForm = {
+        callbackQueryId: this.callbackQuery.id,
+        ...data
+      };
+      this.bot.answerCallbackQuery(answer);
+    }
   }
 
   get data(): string {

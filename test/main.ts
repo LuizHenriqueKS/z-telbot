@@ -52,11 +52,16 @@ telBot.addCallbackQueryListener('x', evt => {
     text: 'Opção escolhida: 1'
   };
   telBot.editMessageText(msg);
+  evt.answerCallbackQuery('Opção escolhida: 1');
 });
 
 telBot.addDefaultCallbackQueryListener(evt => {
   if (!evt.callbackQueryFound) {
     evt.reply().text(`Opção escolhida: ${evt.data}`);
+    evt.answerCallbackQuery({
+      text: `Opção escolhida: ${evt.data}`,
+      showAlert: true
+    });
   }
 });
 
