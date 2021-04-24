@@ -68,6 +68,11 @@ import CommandEvent from './event/CommandEvent';
 import BotCommand from './model/BotCommand';
 import AnswerCallbackQueryForm from './model/AnswerCallbackQueryForm';
 import AnswererCallbackQueryForm from './model/AnswererCallbackQueryForm';
+import InputFile from './model/InputFile';
+import PhotoMessageForm from './model/PhotoMessageForm';
+import SenderPhotoMessageForm from './model/SenderPhotoMessageForm';
+import AnimationMessageForm from './model/AnimationMessageForm';
+import SenderAnimationMessageForm from './model/SenderAnimationMessageForm';
 
 import InvalidResultException from './exception/InvalidResultException';
 import InvalidMessageException from './exception/InvalidMessageException';
@@ -143,7 +148,12 @@ module.exports = {
   BotCommand,
   CallbackQueryEvent,
   AnswerCallbackQueryForm,
-  AnswererCallbackQueryForm
+  AnswererCallbackQueryForm,
+  PhotoMessageForm,
+  InputFile,
+  SenderPhotoMessageForm,
+  AnimationMessageForm,
+  SenderAnimationMessageForm
 };
 
 export { default as ZTelBot } from './core/ZTelBot';
@@ -221,3 +231,8 @@ export { default as CallbackQueryEvent } from './event/CallbackQueryEvent';
 export { default as EditMessageTextForm } from './model/EditMessageTextForm';
 export { default as AnswerCallbackQueryForm } from './model/AnswerCallbackQueryForm';
 export { default as AnswererCallbackQueryForm } from './model/AnswererCallbackQueryForm';
+export { default as InputFile } from './model/InputFile';
+export { default as PhotoMessageForm } from './model/PhotoMessageForm';
+export { default as SenderPhotoMessageForm } from './model/SenderPhotoMessageForm';
+export { default as AnimationMessageForm } from './model/AnimationMessageForm';
+export { default as SenderAnimationMessageForm } from './model/SenderAnimationMessageForm';

@@ -1,7 +1,11 @@
 import {
+  AnimationMessageForm,
   Message,
   MessageForm,
+  PhotoMessageForm,
+  SenderAnimationMessageForm,
   SenderMessageForm,
+  SenderPhotoMessageForm,
   ZTelBot,
   ZTelBotSenderOptions
 } from '..';
@@ -32,6 +36,26 @@ class ZTelBotSender {
       };
     }
     return await this.#bot.sendMessage(form);
+  }
+
+  async photo(message: SenderPhotoMessageForm): Promise<Message> {
+    const arg: any = message;
+    const form: PhotoMessageForm = {
+      chatId: this.#options.chatId,
+      replyToMessageId: this.#options.replyToMessageId,
+      ...arg
+    };
+    return await this.#bot.sendPhoto(form);
+  }
+
+  async animation(message: SenderAnimationMessageForm): Promise<Message> {
+    const arg: any = message;
+    const form: AnimationMessageForm = {
+      chatId: this.#options.chatId,
+      replyToMessageId: this.#options.replyToMessageId,
+      ...arg
+    };
+    return await this.#bot.sendAnimation(form);
   }
 }
 

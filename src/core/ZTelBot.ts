@@ -14,7 +14,9 @@ import {
   MessageListener,
   BotCommand,
   EditMessageTextForm,
-  AnswerCallbackQueryForm
+  AnswerCallbackQueryForm,
+  PhotoMessageForm,
+  AnimationMessageForm
 } from '..';
 
 import axios from 'axios';
@@ -205,6 +207,20 @@ class ZTelBot {
   async sendMessage(message: MessageForm): Promise<Message> {
     const data = smartFixSnakeCase(message);
     const sentMessage = await this.requestResult('sendMessage', data);
+    this.fireSentMessage(sentMessage);
+    return sentMessage;
+  }
+
+  async sendPhoto(message: PhotoMessageForm): Promise<Message> {
+    const data = smartFixSnakeCase(message);
+    const sentMessage = await this.requestResult('sendPhoto', data);
+    this.fireSentMessage(sentMessage);
+    return sentMessage;
+  }
+
+  async sendAnimation(message: AnimationMessageForm): Promise<Message> {
+    const data = smartFixSnakeCase(message);
+    const sentMessage = await this.requestResult('sendAnimation', data);
     this.fireSentMessage(sentMessage);
     return sentMessage;
   }

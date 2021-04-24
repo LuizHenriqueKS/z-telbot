@@ -15,6 +15,14 @@ telBot.addCommandListener({ command: 'hi', description: 'Send a hi for you' }, a
   await evt.reply().text({ text: `Hi: ${evt.command.argsText}` });
 });
 
+telBot.addCommandListener('img', async (evt) => {
+  evt.reply().photo({ photo: 'https://media.giphy.com/media/xUPGcqaVH1cDeKZTBS/giphy.gif' });
+});
+
+telBot.addCommandListener('gif', async (evt) => {
+  evt.reply().animation({ animation: 'https://media.giphy.com/media/xUPGcqaVH1cDeKZTBS/giphy.gif' });
+});
+
 telBot.addCommandListener('ping', async (evt) => {
   await evt.reply().text('Ping');
 });
