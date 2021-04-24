@@ -1,7 +1,6 @@
 import FireAllListenersAttrs from './FireAllListenersAttrs';
 import BotCommandInfo from '../model/BotCommandInfo';
 import CallbackQueryEvent from '../event/CallbackQueryEvent';
-import InvalidMessageException from '../exception/InvalidMessageException';
 
 import {
   UpdateEvent,
@@ -23,8 +22,6 @@ export default function fireAllListeners(attrs: FireAllListenersAttrs) {
     fireDefaultCommandListeners(attrs, cmdEvt);
     fireMessageListeners(attrs, cmdEvt);
     fireTextMessageListeners(attrs, cmdEvt);
-  } else {
-    throw new InvalidMessageException();
   }
 };
 
