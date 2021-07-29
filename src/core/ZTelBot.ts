@@ -16,6 +16,7 @@ import {
   EditMessageTextForm,
   AnswerCallbackQueryForm,
   PhotoMessageForm,
+  AudioMessageForm,
   AnimationMessageForm
 } from '..';
 
@@ -30,6 +31,11 @@ import BotCommandInfo from '../model/BotCommandInfo';
 import BotCallbackQueryInfo from '../model/BotCallbackQueryInfo';
 import BotCommandForm from '../model/BotCommandForm';
 import fireAllListeners from './fireAllListeners';
+import path from 'path';
+import fs from 'fs';
+// import FormData from 'form-data';
+
+const FormData = require('form-data');
 
 class ZTelBot {
   #me?: User;
@@ -56,10 +62,17 @@ class ZTelBot {
     this.#defaultCommandListeners = new Map();
   }
 
-  async request(methodName: string, data?: any): Promise<ZTelBotResponse> {
+  async request(methodName: string, data?: any, formData?: boolean): Promise<ZTelBotResponse> {
     const url = this.getMethodURL(methodName);
     let response;
-    if (data) {
+    if (formData) {
+      const fdata = await this.createFormData(data);
+      response = await axios.post(url, fdata, {
+        headers: {
+          ...fdata.getHeaders()
+        }
+      });
+    } else if (data) {
       response = await axios.post(url, data);
     } else {
       response = await axios.get(url);
@@ -198,8 +211,8 @@ class ZTelBot {
     return me;
   }
 
-  async requestResult(methodName: string, data?: any): Promise<any> {
-    const response = await this.request(methodName, data);
+  async requestResult(methodName: string, data?: any, formData?: boolean): Promise<any> {
+    const response = await this.request(methodName, data, formData);
     const result = this.getResult(response);
     return result;
   }
@@ -211,16 +224,23 @@ class ZTelBot {
     return sentMessage;
   }
 
+  async sendAudio(message: AudioMessageForm): Promise<Message> {
+    const data = smartFixSnakeCase(message);
+    const sentMessage = await this.requestResult('sendAudio', data, true);
+    this.fireSentMessage(sentMessage);
+    return sentMessage;
+  }
+
   async sendPhoto(message: PhotoMessageForm): Promise<Message> {
     const data = smartFixSnakeCase(message);
-    const sentMessage = await this.requestResult('sendPhoto', data);
+    const sentMessage = await this.requestResult('sendPhoto', data, true);
     this.fireSentMessage(sentMessage);
     return sentMessage;
   }
 
   async sendAnimation(message: AnimationMessageForm): Promise<Message> {
     const data = smartFixSnakeCase(message);
-    const sentMessage = await this.requestResult('sendAnimation', data);
+    const sentMessage = await this.requestResult('sendAnimation', data, true);
     this.fireSentMessage(sentMessage);
     return sentMessage;
   }
@@ -287,6 +307,19 @@ class ZTelBot {
     } else {
       throw new InvalidResultException(response.message);
     }
+  }
+
+  private async createFormData(data: any): Promise<any> {
+    const result = new FormData();
+    for (const key of Object.keys(data)) {
+      if (data[key] && data[key].path) {
+        const file = fs.createReadStream((data[key].path as string));
+        result.append(key, file, path.basename(data[key].path));
+      } else {
+        result.append(key, data[key]);
+      }
+    }
+    return result;
   }
 
   private fireSentMessage(message: Message) {

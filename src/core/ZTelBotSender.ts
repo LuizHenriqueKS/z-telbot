@@ -3,9 +3,11 @@ import {
   Message,
   MessageForm,
   PhotoMessageForm,
+  AudioMessageForm,
   SenderAnimationMessageForm,
   SenderMessageForm,
   SenderPhotoMessageForm,
+  SenderAudioMessageForm,
   ZTelBot,
   ZTelBotSenderOptions
 } from '..';
@@ -46,6 +48,16 @@ class ZTelBotSender {
       ...arg
     };
     return await this.#bot.sendPhoto(form);
+  }
+
+  async audio(message: SenderAudioMessageForm): Promise<Message> {
+    const arg: any = message;
+    const form: AudioMessageForm = {
+      chatId: this.#options.chatId,
+      replyToMessageId: this.#options.replyToMessageId,
+      ...arg
+    };
+    return await this.#bot.sendAudio(form);
   }
 
   async animation(message: SenderAnimationMessageForm): Promise<Message> {

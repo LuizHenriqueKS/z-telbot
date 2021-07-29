@@ -1,5 +1,6 @@
-import { BotCommand, Message, ParseMode, ZTelBot } from '../../src';
+import { BotCommand, Message, ParseMode, ZTelBot, fileFromPath } from '../../src';
 import getApiToken from '../util/getApiToken';
+import path from 'path';
 
 it('should get info of bot', async () => {
   const telBot = new ZTelBot({ token: getApiToken() });
@@ -20,6 +21,15 @@ it('should send a message', async () => {
     text: 'Teste'
   });
   expect(message).toHaveProperty('text');
+});
+
+it('should send an audio', async () => {
+  const telBot = new ZTelBot({ token: getApiToken() });
+  const message = await telBot.sendAudio({
+    chatId: process.env.TEST_CHAT_ID || '',
+    audio: fileFromPath(path.resolve('./test/resources/test.mp3'))
+  });
+  expect(message).toBeDefined();
 });
 
 it('should send a javascript code', async () => {

@@ -73,6 +73,9 @@ import PhotoMessageForm from './model/PhotoMessageForm';
 import SenderPhotoMessageForm from './model/SenderPhotoMessageForm';
 import AnimationMessageForm from './model/AnimationMessageForm';
 import SenderAnimationMessageForm from './model/SenderAnimationMessageForm';
+import fileFromPath from './util/fileFromPath';
+import AudioMessageForm from './model/AudioMessageForm';
+import SenderAudioMessageForm from './model/SenderAudioMessageForm';
 
 import InvalidResultException from './exception/InvalidResultException';
 import InvalidMessageException from './exception/InvalidMessageException';
@@ -153,7 +156,10 @@ module.exports = {
   InputFile,
   SenderPhotoMessageForm,
   AnimationMessageForm,
-  SenderAnimationMessageForm
+  SenderAnimationMessageForm,
+  fileFromPath,
+  AudioMessageForm,
+  SenderAudioMessageForm
 };
 
 export { default as ZTelBot } from './core/ZTelBot';
@@ -236,3 +242,6 @@ export { default as PhotoMessageForm } from './model/PhotoMessageForm';
 export { default as SenderPhotoMessageForm } from './model/SenderPhotoMessageForm';
 export { default as AnimationMessageForm } from './model/AnimationMessageForm';
 export { default as SenderAnimationMessageForm } from './model/SenderAnimationMessageForm';
+export { default as fileFromPath } from './util/fileFromPath';
+export { default as AudioMessageForm } from './model/AudioMessageForm';
+export { default as SenderAudioMessageForm } from './model/SenderAudioMessageForm';

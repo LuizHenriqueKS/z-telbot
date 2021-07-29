@@ -1,5 +1,6 @@
-import { EditMessageTextForm, InlineKeyboardMarkup, MessageForm, ParseMode, ZTelBot } from '../src/';
+import { EditMessageTextForm, fileFromPath, InlineKeyboardMarkup, MessageForm, ParseMode, ZTelBot } from '../src/';
 import getApiToken from './util/getApiToken';
+import path from 'path';
 
 const telBot = new ZTelBot({ token: getApiToken() });
 
@@ -21,6 +22,10 @@ telBot.addCommandListener('img', async (evt) => {
 
 telBot.addCommandListener('gif', async (evt) => {
   evt.reply().animation({ animation: 'https://media.giphy.com/media/xUPGcqaVH1cDeKZTBS/giphy.gif' });
+});
+
+telBot.addCommandListener('audio', evt => {
+  evt.reply().audio({ audio: fileFromPath(path.resolve('./test/resources/test.mp3')), caption: 'Áudio enviado' });
 });
 
 telBot.addCommandListener('ping', async (evt) => {
@@ -77,4 +82,6 @@ telBot.sendCommands().then();
 
 telBot.listenUpdates({ skipFirstBatch: true }).then((botInfo) => {
   console.log(`Bot iniciado com sucesso: ${botInfo.username}`);
+}).catch(err => {
+  console.error(err);
 });
