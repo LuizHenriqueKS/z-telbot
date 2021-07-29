@@ -45,7 +45,6 @@ import EncryptedCredentials from './model/EncryptedCredentials';
 import LoginUrl from './model/LoginUrl';
 import CallbackGame from './model/CallbackGame';
 import PassportFile from './model/PassportFile';
-import ParseMode from './model/ParseMode';
 import MessageForm from './model/MessageForm';
 import EditMessageTextForm from './model/EditMessageTextForm';
 import ReplyKeyboardMarkup from './model/ReplyKeyboardMarkup';
@@ -76,9 +75,11 @@ import SenderAnimationMessageForm from './model/SenderAnimationMessageForm';
 import fileFromPath from './util/fileFromPath';
 import AudioMessageForm from './model/AudioMessageForm';
 import SenderAudioMessageForm from './model/SenderAudioMessageForm';
+import FileInfo from './model/FileInfo';
 
 import InvalidResultException from './exception/InvalidResultException';
 import InvalidMessageException from './exception/InvalidMessageException';
+import FileNotAvailableForDownloadError from './exception/FileNotAvailableForDownloadError';
 
 module.exports = {
   ZTelBot,
@@ -127,7 +128,6 @@ module.exports = {
   LoginUrl,
   CallbackGame,
   PassportFile,
-  ParseMode,
   MessageForm,
   EditMessageTextForm,
   ReplyKeyboardMarkup,
@@ -148,6 +148,7 @@ module.exports = {
   CommandEvent,
   InvalidResultException,
   InvalidMessageException,
+  FileNotAvailableForDownloadError,
   BotCommand,
   CallbackQueryEvent,
   AnswerCallbackQueryForm,
@@ -159,7 +160,8 @@ module.exports = {
   SenderAnimationMessageForm,
   fileFromPath,
   AudioMessageForm,
-  SenderAudioMessageForm
+  SenderAudioMessageForm,
+  FileInfo
 };
 
 export { default as ZTelBot } from './core/ZTelBot';
@@ -232,6 +234,7 @@ export { default as CommandEvent } from './event/CommandEvent';
 export { default as MessageListener } from './listener/MessageListener';
 export { default as InvalidResultException } from './exception/InvalidResultException';
 export { default as InvalidMessageException } from './exception/InvalidMessageException';
+export { default as FileNotAvailableForDownloadError } from './exception/FileNotAvailableForDownloadError';
 export { default as BotCommand } from './model/BotCommand';
 export { default as CallbackQueryEvent } from './event/CallbackQueryEvent';
 export { default as EditMessageTextForm } from './model/EditMessageTextForm';
@@ -245,3 +248,4 @@ export { default as SenderAnimationMessageForm } from './model/SenderAnimationMe
 export { default as fileFromPath } from './util/fileFromPath';
 export { default as AudioMessageForm } from './model/AudioMessageForm';
 export { default as SenderAudioMessageForm } from './model/SenderAudioMessageForm';
+export { default as FileInfo } from './model/FileInfo';

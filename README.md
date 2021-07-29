@@ -51,6 +51,7 @@ telBot.listenUpdates().then((botInfo) => {
 [getMe](#getMe)
 [getUpdates](#getUpdates)
 [sendMessage](#sendMessage)
+[sendAudio](#sendAudio)
 [listenUpdates](#listenUpdates)
 [addUpdateListener](#addUpdateListener)
 [addMessageListener](#addMessageListener)
@@ -122,6 +123,32 @@ Parameters:
   disableWebPagePreview?: boolean;
   disableNotification?: boolean;
   replyToMessageId?: number;
+  allowSendingWithoutReply?: boolean;
+  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+}
+```
+
+
+# sendAudio
+
+```javascript
+const messageInfo = telBot.sendAudio({audio: fileFromPath('song.mp3')});
+console.log(messageInfo);
+```
+
+Parameters:
+```typescript
+{
+  chatId!: number | string;
+  audio!: InputFile | string;
+  duration?: number;
+  width?: number;
+  height?: number;
+  thumb?: InputFile | string;
+  caption?: string;
+  parseMode?: ParseMode;
+  captionEntities?: MessageEntity[];
+  disableNotification?: boolean;
   allowSendingWithoutReply?: boolean;
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }

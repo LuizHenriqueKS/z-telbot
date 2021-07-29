@@ -10,6 +10,7 @@ import {
   ZTelBotListenUpdatesOptions,
   TextMessageListener,
   InvalidResultException,
+  FileNotAvailableForDownloadError,
   UpdateForm,
   MessageListener,
   BotCommand,
@@ -17,7 +18,8 @@ import {
   AnswerCallbackQueryForm,
   PhotoMessageForm,
   AudioMessageForm,
-  AnimationMessageForm
+  AnimationMessageForm,
+  FileInfo
 } from '..';
 
 import axios from 'axios';
@@ -33,6 +35,7 @@ import BotCommandForm from '../model/BotCommandForm';
 import fireAllListeners from './fireAllListeners';
 import path from 'path';
 import fs from 'fs';
+import tmp from 'tmp';
 // import FormData from 'form-data';
 
 const FormData = require('form-data');
@@ -231,6 +234,53 @@ class ZTelBot {
     return sentMessage;
   }
 
+  async deleteMessageByIds(chatId: number, messageId: number): Promise<boolean> {
+    const data = smartFixSnakeCase({ chatId, messageId });
+    return await this.requestResult('deleteMessage', data);
+  }
+
+  async deleteMessage(message: Message): Promise<boolean> {
+    const chatId = message.chat.id;
+    const messageId = message.messageId;
+    return await this.deleteMessageByIds(chatId, messageId);
+  }
+
+  async getFile(fileId: string): Promise<FileInfo> {
+    const data = smartFixSnakeCase({ fileId });
+    const file = await this.requestResult('getFile', data);
+    return file;
+  }
+
+  async downloadFile(fileInfo: FileInfo, destFile?: string): Promise<string> {
+    if (fileInfo.filePath) {
+      const url = `https://api.telegram.org/file/bot${this.token}/${fileInfo.filePath}`;
+      const response = await axios.get(url, { responseType: 'stream' });
+      const realFile = this.getRealFile(destFile, path.basename(fileInfo.filePath));
+      const writer = fs.createWriteStream(realFile);
+      response.data.pipe(writer);
+      let error: any = null;
+      return new Promise((resolve, reject) => {
+        writer.on('error', err => {
+          error = err;
+          writer.close();
+          reject(err);
+        });
+        writer.on('close', () => {
+          if (!error) {
+            resolve(realFile);
+          }
+        });
+      });
+    } else {
+      throw new FileNotAvailableForDownloadError();
+    }
+  }
+
+  async downloadFileById(fileId: string, destFile?: string): Promise<string> {
+    const fileInfo = await this.getFile(fileId);
+    return await this.downloadFile(fileInfo, destFile);
+  }
+
   async sendPhoto(message: PhotoMessageForm): Promise<Message> {
     const data = smartFixSnakeCase(message);
     const sentMessage = await this.requestResult('sendPhoto', data, true);
@@ -252,9 +302,9 @@ class ZTelBot {
     return sentMessage;
   }
 
-  async answerCallbackQuery(answer: AnswerCallbackQueryForm) {
+  async answerCallbackQuery(answer: AnswerCallbackQueryForm): Promise<boolean> {
     const data = smartFixSnakeCase(answer);
-    await this.requestResult('answerCallbackQuery', data);
+    return await this.requestResult('answerCallbackQuery', data);
   }
 
   async getMe(): Promise<User> {
@@ -306,6 +356,15 @@ class ZTelBot {
       return smartFixCamelCase(result);
     } else {
       throw new InvalidResultException(response.message);
+    }
+  }
+
+  private getRealFile(destFile: string | undefined, basename: string): string {
+    if (destFile) {
+      return destFile;
+    } else {
+      const dir = tmp.dirSync();
+      return path.join(dir.name, basename);
     }
   }
 

@@ -1,6 +1,7 @@
-import { EditMessageTextForm, fileFromPath, InlineKeyboardMarkup, MessageForm, ParseMode, ZTelBot } from '../src/';
+import { EditMessageTextForm, fileFromPath, InlineKeyboardMarkup, MessageForm, ZTelBot } from '../src/';
 import getApiToken from './util/getApiToken';
 import path from 'path';
+import fs from 'fs';
 
 const telBot = new ZTelBot({ token: getApiToken() });
 
@@ -28,8 +29,33 @@ telBot.addCommandListener('audio', evt => {
   evt.reply().audio({ audio: fileFromPath(path.resolve('./test/resources/test.mp3')), caption: 'Áudio enviado' });
 });
 
+telBot.addCommandListener('download_audio', async evt => {
+  const fileId = evt.message!.replyToMessage!.audio!.fileId;
+  const file = await telBot.downloadFileById(fileId);
+  evt.reply().text(fs.readFileSync(file) ? 'Downloaded' : 'Download failed');
+});
+
 telBot.addCommandListener('ping', async (evt) => {
   await evt.reply().text('Ping');
+});
+
+telBot.addCommandListener('delete', async (evt) => {
+  const result = await telBot.deleteMessage(evt.message.replyToMessage);
+  console.log(result);
+});
+
+telBot.addCommandListener('show_audio_info', async (evt) => {
+  const fileId = evt.message!.replyToMessage!.audio!.fileId;
+  if (typeof (fileId) === 'string') {
+    const fileInfo = await telBot.getFile(fileId);
+    let text = '';
+    for (const key of Object.keys(fileInfo)) {
+      text += `<b>${key}</b>: ${fileInfo[key]}\r\n`;
+    }
+    evt.reply().text({ text: text.trim(), parseMode: 'HTML' });
+  } else {
+    evt.reply().text('Arquivo não encontrado');
+  }
 });
 
 telBot.addDefaultCommandListener(async (evt) => {
@@ -51,7 +77,7 @@ telBot.addCommandListener('options', async (evt) => {
   const message: MessageForm = {
     chatId: receivedMessage.chat.id || 0,
     text: 'Escolha uma <b>opção</b>:',
-    parseMode: ParseMode.HTML,
+    parseMode: 'HTML',
     replyToMessageId: receivedMessage.messageId,
     replyMarkup
   };

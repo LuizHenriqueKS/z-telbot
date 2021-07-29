@@ -1,7 +1,3 @@
-enum ParseMode {
-  HTML = 'HTML',
-  MARKDOWN = 'Markdown',
-  MARKDOWNv2 = 'MarkdownV2',
-}
+type ParseMode = 'HTML' | 'Markdown' | 'MarkdownV2';
 
 export default ParseMode;
