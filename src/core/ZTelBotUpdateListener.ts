@@ -34,7 +34,7 @@ class ZTelBotUpdateListener {
           this.nextOffset(updates);
         } catch (e) {
           errors++;
-          console.error(e);
+          this.handleError(e);
         }
       }
       if (this.#running) {
@@ -57,6 +57,11 @@ class ZTelBotUpdateListener {
     for (const update of updates) {
       this.#offset = update.updateId + 1;
     }
+  }
+
+  private handleError(e: Error) {
+    console.error('handleError');
+    console.error(e);
   }
 }
 

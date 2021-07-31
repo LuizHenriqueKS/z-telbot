@@ -22,7 +22,7 @@ import {
   FileInfo
 } from '..';
 
-import axios from 'axios';
+import fetch from 'node-fetch';
 import smartFixCamelCase from '../util/smartFixCamelCase';
 import smartFixSnakeCase from '../util/smartFixSnakeCase';
 import SentMessageListener from '../listener/SentMessageListener';
@@ -70,17 +70,13 @@ class ZTelBot {
     let response;
     if (formData) {
       const fdata = await this.createFormData(data);
-      response = await axios.post(url, fdata, {
-        headers: {
-          ...fdata.getHeaders()
-        }
-      });
+      response = await fetch(url, { method: 'POST', body: fdata });
     } else if (data) {
-      response = await axios.post(url, data);
+      response = await fetch(url, { method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } });
     } else {
-      response = await axios.get(url);
+      response = await fetch(url);
     }
-    return response.data;
+    return response.json();
   }
 
   addUpdateListener(listener: UpdateListener): number {
@@ -254,10 +250,10 @@ class ZTelBot {
   async downloadFile(fileInfo: FileInfo, destFile?: string): Promise<string> {
     if (fileInfo.filePath) {
       const url = `https://api.telegram.org/file/bot${this.token}/${fileInfo.filePath}`;
-      const response = await axios.get(url, { responseType: 'stream' });
+      const response = await fetch(url);
       const realFile = this.getRealFile(destFile, path.basename(fileInfo.filePath));
       const writer = fs.createWriteStream(realFile);
-      response.data.pipe(writer);
+      response.body.pipe(writer);
       let error: any = null;
       return new Promise((resolve, reject) => {
         writer.on('error', err => {
@@ -373,7 +369,7 @@ class ZTelBot {
     for (const key of Object.keys(data)) {
       if (data[key] && data[key].path) {
         const file = fs.createReadStream((data[key].path as string));
-        result.append(key, file, path.basename(data[key].path));
+        result.append(key, file, data[key].name);
       } else {
         result.append(key, data[key]);
       }

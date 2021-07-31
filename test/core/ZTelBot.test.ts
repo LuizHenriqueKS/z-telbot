@@ -1,4 +1,4 @@
-import { BotCommand, Message, ParseMode, ZTelBot, fileFromPath } from '../../src';
+import { BotCommand, Message, ZTelBot, fileFromPath } from '../../src';
 import getApiToken from '../util/getApiToken';
 import path from 'path';
 
@@ -37,7 +37,7 @@ it('should send a javascript code', async () => {
   const message = await telBot.sendMessage({
     chatId: process.env.TEST_CHAT_ID || '',
     text: '```javascript\r\nconsole.log("Hello world");\r\n```',
-    parseMode: ParseMode.MARKDOWNv2
+    parseMode: 'MarkdownV2'
   });
   expect(message).toHaveProperty('text');
 });
