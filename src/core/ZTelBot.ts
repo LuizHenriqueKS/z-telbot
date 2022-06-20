@@ -351,7 +351,7 @@ class ZTelBot {
       const result = response.result;
       return smartFixCamelCase(result);
     } else {
-      throw new InvalidResultException(response.message);
+      throw new InvalidResultException(response);
     }
   }
 

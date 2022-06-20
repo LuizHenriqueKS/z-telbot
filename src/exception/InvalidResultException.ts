@@ -1,7 +1,7 @@
 class InvalidResultException {
-  message?: string;
-  constructor(message?: string) {
-    this.message = message;
+  response?: any;
+  constructor(response?: any) {
+    this.response = response;
   }
 }
 

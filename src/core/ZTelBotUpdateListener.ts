@@ -32,7 +32,7 @@ class ZTelBotUpdateListener {
           }
           errors = 0;
           this.nextOffset(updates);
-        } catch (e) {
+        } catch (e: any) {
           errors++;
           this.handleError(e);
         }
