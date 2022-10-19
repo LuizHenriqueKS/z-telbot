@@ -6,6 +6,7 @@ class ZTelBotListenUpdatesOptions {
   allowedUpdates?: string[];
   skipFirstBatch?: boolean;
   delay?: number;
+  log?: boolean;
 }
 
 export default ZTelBotListenUpdatesOptions;

@@ -106,7 +106,7 @@ telBot.addDefaultCallbackQueryListener(evt => {
 
 telBot.sendCommands().then();
 
-telBot.listenUpdates({ skipFirstBatch: true }).then((botInfo) => {
+telBot.listenUpdates({ skipFirstBatch: true, log: true }).then((botInfo) => {
   console.log(`Bot iniciado com sucesso: ${botInfo.username}`);
 }).catch(err => {
   console.error(err);

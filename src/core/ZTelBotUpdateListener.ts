@@ -1,4 +1,6 @@
-import { ZTelBotListenUpdatesOptions, ZTelBot, Update } from '..';
+import { Update, ZTelBot, ZTelBotListenUpdatesOptions } from '..';
+import ZTelBotListenUpdatesExecutionArgs from './update/ZTelBotListenUpdatesExecutionArgs';
+import ZTelBotListenUpdatesExecutionResponse from './update/ZTelBotListenUpdatesExecutionResponse';
 
 class ZTelBotUpdateListener {
   #bot: ZTelBot;
@@ -32,6 +34,10 @@ class ZTelBotUpdateListener {
 
   private startNewThread() {
     if (this.#running) {
+      if (this.#options.log) {
+        console.log('Starting a new thread to telegram bot...');
+      }
+      this.#lastIteration += 1;
       this.listenUpdates({ ...this.#options }, this.#lastIteration + 1);
     }
   }
@@ -50,32 +56,43 @@ class ZTelBotUpdateListener {
   private listenUpdates(options: ZTelBotListenUpdatesOptions, iteration: number, errors = 0, onceDelay?: number) {
     const defaultDelay = this.#options.delay || 1000;
     setTimeout(async () => {
-      if (this.#running && this.#lastIteration < iteration) {
-        if (onceDelay && onceDelay > defaultDelay) {
-          console.log('Resuming update...');
-        }
-        try {
-          const updates = await this.getUpdates(options);
-          if (this.#lastIteration >= iteration || !this.#running) {
-            return;
-          }
-          this.#lastIterationMs = new Date().getTime();
-          this.#lastIteration = iteration;
-          if (!options.skipFirstBatch) {
-            this.#bot.fireUpdates(updates);
-          }
-          errors = 0;
-          this.nextOffset(updates);
-        } catch (e: any) {
-          errors++;
-          this.handleError(e);
-        }
-      }
-      if (this.#running) {
+      const args = {
+        options, iteration, errors, defaultDelay, onceDelay
+      };
+      const response = await this.execute(args);
+      if (response.canContinueToListenUpdates && this.#running) {
         options.skipFirstBatch = false;
-        this.listenUpdates(options, iteration + 1, errors, errors >= 3 ? 5000 : undefined);
+        this.listenUpdates(options, iteration + 1, args.errors, args.errors >= 3 ? 5000 : undefined);
       }
     }, onceDelay || defaultDelay);
+  }
+
+  private async execute(args: ZTelBotListenUpdatesExecutionArgs): Promise<ZTelBotListenUpdatesExecutionResponse> {
+    if (this.#running && this.#lastIteration < args.iteration) {
+      if (args.onceDelay && args.onceDelay > args.defaultDelay && this.#options.log) {
+        console.log('Resuming update...');
+      }
+      try {
+        const updates = await this.getUpdates(args.options);
+        if (this.#lastIteration >= args.iteration || !this.#running) {
+          return { canContinueToListenUpdates: false };
+        }
+        this.#lastIterationMs = new Date().getTime();
+        this.#lastIteration = args.iteration;
+        if (!args.options.skipFirstBatch) {
+          this.#bot.fireUpdates(updates);
+        }
+        args.errors = 0;
+        this.nextOffset(updates);
+      } catch (e: any) {
+        this.handleError(e);
+        if (e.response && e.response.description && e.response.description === 'Conflict: terminated by other getUpdates request; make sure that only one bot instance is running') {
+          return { canContinueToListenUpdates: false };
+        }
+        args.errors++;
+      }
+    }
+    return { canContinueToListenUpdates: true };
   }
 
   private async getUpdates(options: ZTelBotListenUpdatesOptions): Promise<Update[]> {
