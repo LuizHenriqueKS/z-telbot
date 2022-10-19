@@ -40,7 +40,7 @@ telBot.addCommandListener('ping', async (evt) => {
 });
 
 telBot.addCommandListener('delete', async (evt) => {
-  const result = await telBot.deleteMessage(evt.message.replyToMessage);
+  const result = await telBot.deleteMessage(evt.message!.replyToMessage!);
   console.log(result);
 });
 
@@ -75,10 +75,10 @@ telBot.addCommandListener('options', async (evt) => {
     ]
   };
   const message: MessageForm = {
-    chatId: receivedMessage.chat.id || 0,
+    chatId: receivedMessage!.chat.id || 0,
     text: 'Escolha uma <b>opção</b>:',
     parseMode: 'HTML',
-    replyToMessageId: receivedMessage.messageId,
+    replyToMessageId: receivedMessage!.messageId,
     replyMarkup
   };
   await telBot.sendMessage(message);
@@ -87,7 +87,7 @@ telBot.addCommandListener('options', async (evt) => {
 telBot.addCallbackQueryListener('x', evt => {
   const msg: EditMessageTextForm = {
     chatId: evt.chat.id,
-    messageId: evt.message.messageId,
+    messageId: evt.message!.messageId,
     text: 'Opção escolhida: 1'
   };
   telBot.editMessageText(msg);
