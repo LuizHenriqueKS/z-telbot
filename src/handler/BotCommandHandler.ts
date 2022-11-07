@@ -36,7 +36,7 @@ class BotCommandHandler {
 
   get commandName(): string {
     if (!this.#commandName) {
-      const regex = /\/(\w+)(@| |$)/gm;
+      const regex = /\/(\w+)(@| |$|\n|\r)/gm;
       const response = regex.exec(this.#message.text || '');
       this.#commandName = response ? response[1] : '';
     }
