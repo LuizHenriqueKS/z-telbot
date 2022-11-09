@@ -3,6 +3,7 @@ class ZTelBotListenUpdatesOptions {
   offset?: number;
   limit?: number;
   timeout?: number;
+  threadTimeout?: number;
   allowedUpdates?: string[];
   skipFirstBatch?: boolean;
   delay?: number;
