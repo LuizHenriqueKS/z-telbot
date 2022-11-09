@@ -14,7 +14,7 @@ class ZTelBotUpdateListener {
   constructor(bot: ZTelBot, options: ZTelBotListenUpdatesOptions) {
     this.#bot = bot;
     this.#running = false;
-    this.#options = options;
+    this.#options = { ...options };
     this.#offset = options.offset;
   }
 
@@ -38,7 +38,7 @@ class ZTelBotUpdateListener {
         console.log('Starting a new thread to telegram bot...');
       }
       this.#lastIteration += 1;
-      this.listenUpdates({ ...this.#options }, this.#lastIteration + 1);
+      this.listenUpdates(this.#options, this.#lastIteration + 1);
     }
   }
 
