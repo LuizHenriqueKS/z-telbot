@@ -43,7 +43,7 @@ class ZTelBotUpdateListener {
   }
 
   private startInterval() {
-    const maxTimeout = 10000;
+    const maxTimeout = this.#options.timeout || 10000;
     this.#lastIterationMs = new Date().getTime();
     this.#interval = setInterval(() => {
       const now = new Date().getTime();
