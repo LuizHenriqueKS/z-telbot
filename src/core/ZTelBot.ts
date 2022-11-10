@@ -68,7 +68,7 @@ class ZTelBot {
   async request(methodName: string, data?: any, formData?: boolean): Promise<ZTelBotResponse> {
     const url = this.getMethodURL(methodName);
     let response;
-    console.log(url, data, formData);
+    // console.log(url, data, formData);
     if (formData) {
       const fdata = await this.createFormData(data);
       response = await fetch(url, { method: 'POST', body: fdata });
