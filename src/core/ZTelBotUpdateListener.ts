@@ -81,6 +81,7 @@ class ZTelBotUpdateListener {
         this.#lastIteration = args.iteration;
         if (!args.options.skipFirstBatch) {
           this.#bot.fireUpdates(updates);
+          args.options.skipFirstBatch = false;
         }
         args.errors = 0;
         this.nextOffset(updates);

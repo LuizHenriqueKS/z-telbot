@@ -23,10 +23,13 @@ class BotCommandHandler {
     if (!this.#botName) {
       const index = this.#message.text?.indexOf('@');
       if (index && index >= 0) {
-        const regex = /^(\w+) |$/g;
-        const str = this.#message.text?.substr(index + 1)!;
-        const args = regex.exec(str);
-        this.#botName = args![1];
+        const str = this.#message.text?.substring(index + 1)!;
+        this.#botName = str;
+        if (str.includes(' ')) {
+          const regex = /^(\w+) |$/g;
+          const args = regex.exec(str);
+          this.#botName = args![1];
+        }
       } else {
         this.#botName = '';
       }

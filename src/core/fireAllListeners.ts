@@ -47,9 +47,9 @@ function fireDefaultCallbackQueryListeners(attrs: FireAllListenersAttrs, callEvt
 }
 
 function fireCommandListeners(attrs: FireAllListenersAttrs, cmdEvt: CommandEvent) {
-  if (cmdEvt.command) {
-    for (const listener of attrs.commandListeners.values()) {
-      if (isToThisBot(attrs, cmdEvt.command)) {
+  if (cmdEvt.command && cmdEvt.command.isValid) {
+    if (isToThisBot(attrs, cmdEvt.command)) {
+      for (const listener of attrs.commandListeners.values()) {
         if (isThisCommand(cmdEvt.command, listener)) {
           listener.listener(cmdEvt);
           cmdEvt.commandFound = cmdEvt.command?.commandName;
@@ -60,9 +60,11 @@ function fireCommandListeners(attrs: FireAllListenersAttrs, cmdEvt: CommandEvent
 }
 
 function fireDefaultCommandListeners(attrs: FireAllListenersAttrs, cmdEvt: CommandEvent) {
-  for (const listener of attrs.defaultCommandListeners.values()) {
-    if (cmdEvt.command.isValid) {
-      listener(cmdEvt);
+  if (cmdEvt.command.isValid) {
+    if (isToThisBot(attrs, cmdEvt.command)) {
+      for (const listener of attrs.defaultCommandListeners.values()) {
+        listener(cmdEvt);
+      }
     }
   }
 }
@@ -82,7 +84,7 @@ function fireTextMessageListeners(attrs: FireAllListenersAttrs, cmdEvt: CommandE
 }
 
 function isToThisBot(attrs: FireAllListenersAttrs, command: BotCommandHandler) {
-  return command.botName.toLowerCase() === attrs.me.username?.toLowerCase() || command.botName === '';
+  return command.botName.toLowerCase() === (attrs.me.username || '').toLowerCase();
 }
 
 function isThisCommand(command: BotCommandHandler, listener: BotCommandInfo) {

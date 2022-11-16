@@ -20,6 +20,7 @@ class AudioMessageForm {
   captionEntities?: MessageEntity[];
   disableNotification?: boolean;
   allowSendingWithoutReply?: boolean;
+  replyToMessageId?: number;
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
