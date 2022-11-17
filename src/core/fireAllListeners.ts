@@ -84,7 +84,7 @@ function fireTextMessageListeners(attrs: FireAllListenersAttrs, cmdEvt: CommandE
 }
 
 function isToThisBot(attrs: FireAllListenersAttrs, command: BotCommandHandler) {
-  return command.botName.toLowerCase() === (attrs.me.username || '').toLowerCase();
+  return command.botName.toLowerCase() === (attrs.me.username || '').toLowerCase() || command.botName.toLowerCase() === '';
 }
 
 function isThisCommand(command: BotCommandHandler, listener: BotCommandInfo) {
