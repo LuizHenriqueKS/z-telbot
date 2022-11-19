@@ -1,41 +1,24 @@
 import {
-  User,
-  Update,
-  Message,
-  MessageForm,
-  ZTelBotOptions,
-  ZTelBotResponse,
-  UpdateListener,
-  SentMessageEvent,
-  ZTelBotListenUpdatesOptions,
-  TextMessageListener,
-  InvalidResultException,
-  FileNotAvailableForDownloadError,
-  UpdateForm,
-  MessageListener,
-  BotCommand,
-  EditMessageTextForm,
-  AnswerCallbackQueryForm,
-  PhotoMessageForm,
-  AudioMessageForm,
-  AnimationMessageForm,
-  FileInfo
+  AnimationMessageForm, AnswerCallbackQueryForm, AudioMessageForm, BotCommand,
+  EditMessageTextForm, FileInfo, FileNotAvailableForDownloadError, InvalidResultException, Message,
+  MessageForm, MessageListener, PhotoMessageForm, SentMessageEvent, TextMessageListener, Update, UpdateForm, UpdateListener, User, ZTelBotListenUpdatesOptions, ZTelBotOptions,
+  ZTelBotResponse, DocumentMessageForm
 } from '..';
 
+import fs from 'fs';
 import fetch from 'node-fetch';
-import smartFixCamelCase from '../util/smartFixCamelCase';
-import smartFixSnakeCase from '../util/smartFixSnakeCase';
-import SentMessageListener from '../listener/SentMessageListener';
-import ZTelBotUpdateListener from './ZTelBotUpdateListener';
-import CommandListener from '../listener/CommandListener';
+import path from 'path';
+import tmp from 'tmp';
 import CallbackQueryListener from '../listener/CallbackQueryListener';
-import BotCommandInfo from '../model/BotCommandInfo';
+import CommandListener from '../listener/CommandListener';
+import SentMessageListener from '../listener/SentMessageListener';
 import BotCallbackQueryInfo from '../model/BotCallbackQueryInfo';
 import BotCommandForm from '../model/BotCommandForm';
+import BotCommandInfo from '../model/BotCommandInfo';
+import smartFixCamelCase from '../util/smartFixCamelCase';
+import smartFixSnakeCase from '../util/smartFixSnakeCase';
 import fireAllListeners from './fireAllListeners';
-import path from 'path';
-import fs from 'fs';
-import tmp from 'tmp';
+import ZTelBotUpdateListener from './ZTelBotUpdateListener';
 // import FormData from 'form-data';
 
 const FormData = require('form-data');
@@ -281,6 +264,13 @@ class ZTelBot {
   async sendPhoto(message: PhotoMessageForm): Promise<Message> {
     const data = smartFixSnakeCase(message);
     const sentMessage = await this.requestResult('sendPhoto', data, true);
+    this.fireSentMessage(sentMessage);
+    return sentMessage;
+  }
+
+  async sendDocument(document: DocumentMessageForm): Promise<Message> {
+    const data = smartFixSnakeCase(message);
+    const sentMessage = await this.requestResult('sendDocument', data, true);
     this.fireSentMessage(sentMessage);
     return sentMessage;
   }

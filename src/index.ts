@@ -76,6 +76,7 @@ import fileFromPath from './util/fileFromPath';
 import AudioMessageForm from './model/AudioMessageForm';
 import SenderAudioMessageForm from './model/SenderAudioMessageForm';
 import FileInfo from './model/FileInfo';
+import DocumentMessageForm from './model/DocumentMessageForm';
 
 import InvalidResultException from './exception/InvalidResultException';
 import InvalidMessageException from './exception/InvalidMessageException';
@@ -161,7 +162,8 @@ module.exports = {
   fileFromPath,
   AudioMessageForm,
   SenderAudioMessageForm,
-  FileInfo
+  FileInfo,
+  DocumentMessageForm
 };
 
 export { default as ZTelBot } from './core/ZTelBot';
@@ -249,3 +251,4 @@ export { default as fileFromPath } from './util/fileFromPath';
 export { default as AudioMessageForm } from './model/AudioMessageForm';
 export { default as SenderAudioMessageForm } from './model/SenderAudioMessageForm';
 export { default as FileInfo } from './model/FileInfo';
+export { default as DocumentMessageForm } from './model/DocumentMessageForm';
