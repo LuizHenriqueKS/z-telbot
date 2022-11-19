@@ -268,7 +268,7 @@ class ZTelBot {
     return sentMessage;
   }
 
-  async sendDocument(document: DocumentMessageForm): Promise<Message> {
+  async sendDocument(message: DocumentMessageForm): Promise<Message> {
     const data = smartFixSnakeCase(message);
     const sentMessage = await this.requestResult('sendDocument', data, true);
     this.fireSentMessage(sentMessage);
